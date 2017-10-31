@@ -39,16 +39,15 @@ learning_rate = 0.01
 momentum = 0.9
 
 # Loading the data
-with open('train_data_batched.pkl') as f:
-    batched_data = pickle.load(f)
+with open('train_data_batched.pkl', 'rb') as f:
+    batched_data = pickle.load(f, encoding='iso-8859-1')
 
 # Load original text targets
-with open('original_targets_batched.pkl') as f:
-    original_targets = pickle.load(f)
+with open('original_targets_batched.pkl', 'rb') as f:
+    original_targets = pickle.load(f, encoding='iso-8859-1')
 
 num_valid_batches = 1
 num_train_batches = len(batched_data) - num_valid_batches
-
 valid_batches = batched_data[-num_valid_batches:]
 valid_orig_targets = original_targets[-num_valid_batches:]
 train_batches = batched_data[:num_train_batches]
@@ -148,13 +147,14 @@ with tf.Session(graph=graph) as session:
     # Initializate the weights and biases
     tf.initialize_all_variables().run()
 
-    for curr_epoch in xrange(num_epochs):
+    for curr_epoch in range(num_epochs):
         train_cost = train_ler = 0
 
-        for batch in xrange(num_train_batches):
+        for batch in range(num_train_batches):
 
             print('Batch {} / {}'.format(batch, num_train_batches))
-
+            print(batch)
+            print(train_batches)
             feed = {inputs: train_batches[batch][0],
                     target_idx: train_batches[batch][1][0],
                     target_vals: train_batches[batch][1][1],
@@ -171,8 +171,9 @@ with tf.Session(graph=graph) as session:
 
         valid_cost = valid_ler = 0
 
-        for batch in xrange(num_valid_batches):
-
+        for batch in range(num_valid_batches):
+            print(batch)
+            print(valid_batches)
             val_feed = {inputs: valid_batches[batch][0],
                         target_idx: valid_batches[batch][1][0],
                         target_vals: valid_batches[batch][1][1],

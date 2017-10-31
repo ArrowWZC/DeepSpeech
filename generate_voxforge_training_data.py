@@ -48,7 +48,7 @@ def sparse_tuple_from(sequences, dtype=np.int32):
     values = []
 
     for n, seq in enumerate(sequences):
-        indices.extend(zip([n]*len(seq), xrange(len(seq))))
+        indices.extend(zip([n]*len(seq), range(len(seq))))
         values.extend(seq)
 
     indices = np.asarray(indices, dtype=np.int64)
@@ -82,7 +82,7 @@ def extract_features_and_targets(wav_file, txt_file):
     seq_len = features.shape[0]
 
     # Readings targets
-    with open(txt_file, 'rb') as f:
+    with open(txt_file, 'r') as f:
         for line in f.readlines():
             if line[0] == ';':
                 continue
@@ -120,7 +120,7 @@ def make_batched_data(wav_files, batch_size=4):
     original_targets = []
     num_batches = int(np.floor(len(wav_files) / batch_size))
 
-    for n_batch in xrange(num_batches):
+    for n_batch in range(num_batches):
 
         batch_features = []
         batch_targets = []
